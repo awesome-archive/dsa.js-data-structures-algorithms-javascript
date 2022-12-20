@@ -19,23 +19,24 @@ class BinarySearchTree {
    * @returns {BinaryTreeNode} newly added node
    */
   add(value) {
-    const newNode = new BinaryTreeNode(value);
+    let node = new BinaryTreeNode(value);
 
     if (this.root) {
       const { found, parent } = this.findNodeAndParent(value); // <1>
       if (found) { // duplicated: value already exist on the tree
         found.meta.multiplicity = (found.meta.multiplicity || 1) + 1; // <2>
+        node = found;
       } else if (value < parent.value) {
-        parent.setLeftAndUpdateParent(newNode);
+        parent.setLeftAndUpdateParent(node);
       } else {
-        parent.setRightAndUpdateParent(newNode);
+        parent.setRightAndUpdateParent(node);
       }
     } else {
-      this.root = newNode;
+      this.root = node;
     }
 
     this.size += 1;
-    return newNode;
+    return node;
   }
   // end::add[]
 
@@ -249,14 +250,14 @@ class BinarySearchTree {
   /**
    * Represent Binary Tree as an array.
    *
-   * Leaf nodes will have two `undefined` descendents.
+   * Leaf nodes will have two `undefined` descendants.
    *
    * The array representation of the binary tree is as follows:
    *
    * First element (index=0) is the root.
-   * The following two elements (index=1,2) are descendents of the root: left (a) and right (b).
-   * The next two elements (index=3,4) are the descendents of a
-   * The next two elements (index=5,6) are the descendents of b and so on.
+   * The following two elements (index=1,2) are descendants of the root: left (a) and right (b).
+   * The next two elements (index=3,4) are the descendants of a
+   * The next two elements (index=5,6) are the descendants of b and so on.
    *
    *  0     1            2             3       4        5       6        n
    * [root, a=root.left, b=root.right, a.left, a.right, b.left, b.right, ...]

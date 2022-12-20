@@ -19,7 +19,7 @@ class BinaryTreeNode {
 
   // tag::setAndUpdateParent[]
   /**
-   * Set a left node descendents.
+   * Set a left node descendants.
    * Also, children get associated to parent.
    */
   setLeftAndUpdateParent(node) {
@@ -31,7 +31,7 @@ class BinaryTreeNode {
   }
 
   /**
-   * Set a right node descendents.
+   * Set a right node descendants.
    * Also, children get associated to parent.
    */
   setRightAndUpdateParent(node) {
@@ -71,7 +71,7 @@ class BinaryTreeNode {
   }
 
   /**
-   * Node is leaf is it has no descendents
+   * Node is leaf is it has no descendants
    */
   get isLeaf() {
     return !this.left && !this.right;
@@ -171,6 +171,21 @@ class BinaryTreeNode {
     }
     this.meta.data = value;
     return this;
+  }
+
+  /**
+   * Convert Binary tree from an iterable (e.g. array)
+   * @param {array|string} iterable - The iterable
+   */
+  static from(iterable = []) {
+    const toBinaryTree = (array, index = 0) => {
+      if (index >= array.length) return null;
+      const node = new BinaryTreeNode(array[index]);
+      node.setLeftAndUpdateParent(toBinaryTree(array, index * 2 + 1));
+      node.setRightAndUpdateParent(toBinaryTree(array, index * 2 + 2));
+      return node;
+    };
+    return toBinaryTree(Array.from(iterable));
   }
 }
 

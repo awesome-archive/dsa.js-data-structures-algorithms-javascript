@@ -2,7 +2,7 @@ const { Graph } = require('../../index');
 
 describe('Graph', () => {
   let graph;
-  const getValues = node => (Array.isArray(node) ? node.map(a => getValues(a)) : node.value);
+  const getValues = (node) => (Array.isArray(node) ? node.map((a) => getValues(a)) : node.value);
 
   beforeEach(() => {
     graph = new Graph();
@@ -252,11 +252,11 @@ describe('Graph', () => {
         expect(graph.areConnected('you', 'barbara')).toBe(true);
       });
 
-      it('should return true if two nodes are connected', () => {
+      it('should return true if two nodes are connected to itself', () => {
         expect(graph.areConnected('you', 'you')).toBe(true);
       });
 
-      it('should return true if two nodes are connected', () => {
+      it('should return true if two nodes are connected to other', () => {
         expect(graph.areConnected('you', 'John')).toBe(false);
       });
     });

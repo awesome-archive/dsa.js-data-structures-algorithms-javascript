@@ -60,13 +60,13 @@ describe('LinkedList Test', () => {
   });
 
   describe('#addFirst', () => {
-    it('add element to the head/root of the list', () => {
+    it('add 1 element to the head/root of the list', () => {
       linkedList.addFirst('a');
       expect(linkedList.first.value).toBe('a');
       expect(linkedList.last.value).toBe('a');
     });
 
-    it('add element to the head/root of the list', () => {
+    it('add 2 elements to the head/root of the list', () => {
       linkedList.addFirst('a');
       linkedList.addFirst('b');
       expect(linkedList.first.value).toBe('b');
@@ -122,14 +122,14 @@ describe('LinkedList Test', () => {
       });
     });
 
-    describe('#indexOf', () => {
+    describe('#getIndexByValue', () => {
       it('should find element index', () => {
-        expect(linkedList.indexOf(0)).toBe(0);
-        expect(linkedList.indexOf('found')).toBe(1);
+        expect(linkedList.getIndexByValue(0)).toBe(0);
+        expect(linkedList.getIndexByValue('found')).toBe(1);
       });
 
       it('should return undefined', () => {
-        expect(linkedList.indexOf('hola')).toBe(undefined);
+        expect(linkedList.getIndexByValue('hola')).toBe(undefined);
       });
     });
 
@@ -155,8 +155,8 @@ describe('LinkedList Test', () => {
       });
 
       it('should return undefined if not found', () => {
-        expect(linkedList.remove(2)).toBe(undefined);
-        expect(linkedList.remove(-2)).toBe(undefined);
+        expect(linkedList.remove(2)).toBe(null);
+        expect(linkedList.remove(-2)).toBe(null);
       });
 
       it('should update size, last and first', () => {
@@ -164,7 +164,7 @@ describe('LinkedList Test', () => {
         expect(linkedList.size).toBe(1);
         expect(linkedList.remove(0)).toBe('found');
         expect(linkedList.size).toBe(0);
-        expect(linkedList.remove(0)).toBe(undefined);
+        expect(linkedList.remove(0)).toBe(null);
         expect(linkedList.size).toBe(0);
         expect(linkedList.first).toBe(null);
         expect(linkedList.last).toBe(null);
@@ -173,7 +173,7 @@ describe('LinkedList Test', () => {
 
     describe('#addAt', () => {
       it('should insert at the beginning', () => {
-        const newNode = linkedList.add('first', 0);
+        const newNode = linkedList.addAt('first', 0);
         expect(newNode.value).toBe('first');
         expect(newNode.next.value).toBe(0);
         expect(linkedList.size).toBe(3);
@@ -181,7 +181,7 @@ describe('LinkedList Test', () => {
       });
 
       it('should insert at the middle', () => {
-        const newNode = linkedList.add('middle', 1);
+        const newNode = linkedList.addAt('middle', 1);
         expect(newNode.value).toBe('middle');
         // checking the 4 surrounding links were updated
         expect(newNode.next.value).toBe('found');
@@ -194,7 +194,7 @@ describe('LinkedList Test', () => {
       });
 
       it('should insert at the end', () => {
-        const newNode = linkedList.add('end', 2);
+        const newNode = linkedList.addAt('end', 2);
         expect(newNode.value).toBe('end');
         expect(newNode.next).toBe(null);
         expect(newNode.previous.value).toBe('found');
@@ -203,7 +203,7 @@ describe('LinkedList Test', () => {
       });
 
       it('should not insert out of bound', () => {
-        const newNode = linkedList.add('out-of-bound', 3);
+        const newNode = linkedList.addAt('out-of-bound', 3);
         expect(newNode).toBe(undefined);
         expect(linkedList.last.value).toBe('found');
         expect(linkedList.size).toBe(2);
@@ -217,10 +217,37 @@ describe('LinkedList Test', () => {
         expect(linkedList.length).toBe(1);
       });
 
-      it('should remove last element', () => {
+      it('should remove first element', () => {
         expect(linkedList.length).toBe(2);
         expect(linkedList.removeByPosition(0)).toBe(0);
         expect(linkedList.length).toBe(1);
+      });
+    });
+
+    describe('#removeByNode', () => {
+      it('should remove first node', () => {
+        const node = linkedList.first;
+        linkedList.removeByNode(node);
+        expect(linkedList.first.value).toEqual('found');
+        expect(linkedList.first.previous).toEqual(null);
+        expect(linkedList.size).toEqual(1);
+      });
+
+      it('should remove last node', () => {
+        const node = linkedList.last;
+        linkedList.removeByNode(node);
+        expect(linkedList.first.value).toEqual(0);
+        expect(linkedList.first.next).toEqual(null);
+        expect(linkedList.size).toEqual(1);
+      });
+
+      it('should remove from the middle', () => {
+        const node = linkedList.first;
+        linkedList.addLast('last');
+        linkedList.removeByNode(node);
+        expect(linkedList.first.next).toEqual(linkedList.last);
+        expect(linkedList.last.previous).toEqual(linkedList.first);
+        expect(linkedList.size).toEqual(2);
       });
     });
   });
@@ -400,6 +427,25 @@ describe('LinkedList Test', () => {
 
       it('get string', () => {
         expect(linkedList.toString()).toBe("'a' -> 2 -> 'c' -> { k: 4, v: 'd' }");
+      });
+    });
+
+
+    describe('iterator', () => {
+      let a;
+      let b;
+      let c;
+      let d;
+      beforeEach(() => {
+        a = linkedList.addLast('a');
+        b = linkedList.addLast('b');
+        c = linkedList.addLast('c');
+        d = linkedList.addLast('d');
+      });
+
+      it('should convert to array of nodes', () => {
+        expect([...linkedList]).toEqual([a, b, c, d]);
+        expect(Array.from(linkedList)).toEqual([a, b, c, d]);
       });
     });
   });

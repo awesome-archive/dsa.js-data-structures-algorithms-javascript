@@ -69,7 +69,7 @@ describe('AvlTree', () => {
     });
 
     it('should not balance', () => {
-      [30, 20, 40, 10, 50].forEach(v => tree.add(v));
+      [30, 20, 40, 10, 50].forEach((v) => tree.add(v));
 
       expect(tree.toArray()).toEqual([
         30,
@@ -142,6 +142,88 @@ describe('AvlTree', () => {
         value: 2, left: 1, right: 3, parent: null,
       });
       expect(tree.root).toBe(n);
+    });
+  });
+
+  describe('balance without loosing nodes', () => {
+    beforeEach(() => {
+      tree.add(16);
+      tree.add(4);
+      tree.add(32);
+      tree.add(8);
+      tree.add(2);
+    });
+
+    it('should have all nodes', () => {
+      expect(tree.toArray()).toEqual([16, 4, 32, 2, 8,
+        null, null, null, null, null, null]);
+    });
+
+    it('should rebalance and keep all nodes', () => {
+      tree.add(1);
+      expect(tree.toArray()).toEqual([4, 2, 16, 1, null, 8, 32,
+        null, null, null, null, null, null]);
+    });
+  });
+
+  describe('balancing to the left', () => {
+    let n32;
+    beforeEach(() => {
+      n32 = tree.add(32);
+      tree.add(8);
+      tree.add(64);
+      tree.add(4);
+      tree.add(16);
+      tree.add(48);
+      tree.add(128);
+      tree.add(2);
+      tree.add(6);
+      tree.add(10);
+      tree.add(20);
+    });
+
+    it('should have all nodes', () => {
+      expect(tree.toArray()).toEqual([32, 8, 64, 4, 16, 48, 128, 2, 6, 10, 20,
+        null, null, null, null, null, null, null, null, null, null, null, null]);
+    });
+
+    it('should rebalance when removing', () => {
+      tree.remove(64);
+      expect(tree.toArray()).toEqual([32, 8, 128, 4, 16, 48, null, 2, 6, 10, 20,
+        null, null, null, null, null, null, null, null, null, null]);
+      expect(n32.balanceFactor).toBe(1);
+      expect(n32.right.balanceFactor).toBe(1);
+      expect(n32.left.balanceFactor).toBe(0);
+
+      tree.remove(48);
+      expect(tree.toArray()).toEqual([8, 4, 32, 2, 6, 16, 128, null, null, null, null, 10, 20,
+        null, null, null, null, null, null]);
+    });
+  });
+
+  describe('balancing to the right', () => {
+    beforeEach(() => {
+      tree.add(8);
+      tree.add(4);
+      tree.add(32);
+      tree.add(2);
+      tree.add(16);
+      tree.add(64);
+      tree.add(10);
+      tree.add(20);
+      tree.add(60);
+      tree.add(70);
+    });
+
+    it('should build the tree', () => {
+      expect(tree.toArray()).toEqual([8, 4, 32, 2, null, 16, 64, null, null, 10, 20, 60, 70,
+        null, null, null, null, null, null, null, null]);
+    });
+
+    it('should rebalance right side', () => {
+      tree.remove(2);
+      expect(tree.toArray()).toEqual([32, 8, 64, 4, 16, 60, 70, null, null, 10, 20,
+        null, null, null, null, null, null, null, null]);
     });
   });
 });

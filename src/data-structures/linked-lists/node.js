@@ -1,14 +1,18 @@
 // tag::snippet[]
 /**
- * Node with reference to next and previous element
+ * Linked List Node
  */
+// tag::singly[]
 class Node {
-  constructor(value) {
+  constructor(value = null) {
     this.value = value;
     this.next = null;
-    this.previous = null;
+    // end::singly[]
+    this.previous = null; // if doubly linked list
+    // tag::singly[]
   }
 }
+// end::singly[]
 // end::snippet[]
 
 module.exports = Node;

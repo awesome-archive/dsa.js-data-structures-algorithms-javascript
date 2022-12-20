@@ -41,13 +41,14 @@ class Graph {
    * Removes node from graph
    * It also removes the reference of the deleted node from
    *  anywhere it was adjacent to.
-   * Runtime: O(|V| + |E|)
+   * Runtime: O(|V|) because adjacency list is implemented with a HashSet.
+   * It were implemented with an array then it would be O(|V| + |E|).
    * @param {any} value node's value
    */
   removeVertex(value) {
     const current = this.nodes.get(value); // <1>
     if (current) {
-      Array.from(this.nodes.values()).forEach(node => node.removeAdjacent(current)); // <2>
+      Array.from(this.nodes.values()).forEach((node) => node.removeAdjacent(current)); // <2>
     }
     return this.nodes.delete(value); // <3>
   }
@@ -55,9 +56,9 @@ class Graph {
 
   // tag::addEdge[]
   /**
-   * Create a connection between source node and destination node.
-   * If the graph is undirected it will also create the conneciton from destination to destination.
-   * If the nodes doesn't exist then it will create them on the fly
+   * Create a connection between the source node and the destination node.
+   * If the graph is undirected, it will also create the link from destination to source.
+   * If the nodes don't exist, then it will make them on the fly.
    * Runtime: O(1)
    * @param {any} source
    * @param {any} destination
@@ -79,10 +80,11 @@ class Graph {
 
   // tag::removeEdge[]
   /**
-   * Remove connection between source node and destination.
-   * If the graph is undirected it will also remove the conneciton from destination to destination.
+   * Remove the connection between source node and destination.
+   * If the graph is undirected, it will also create the link from destination to source.
    *
-   * Runtime: O(|E|)
+   * Runtime: O(1): implemented with HashSet.
+   * If implemented with array, would be O(|E|).
    *
    * @param {any} source
    * @param {any} destination
@@ -105,7 +107,7 @@ class Graph {
 
   // tag::areAdjacents[]
   /**
-   * True if two nodes are adjacent to each other
+   * True if two nodes are adjacent.
    * @param {any} source node's value
    * @param {any} destination node's value
    */
@@ -132,7 +134,7 @@ class Graph {
   }
 
   /**
-   * Depth-first search
+   * Breadth-first search
    * Use a queue to visit nodes (FIFO)
    * @param {Node} first node to start the dfs
    */
@@ -156,7 +158,7 @@ class Graph {
       if (node && !visited.has(node)) {
         yield node;
         visited.set(node);
-        node.getAdjacents().forEach(adj => visitList.add(adj));
+        node.getAdjacents().forEach((adj) => visitList.add(adj));
       }
     }
   }
@@ -243,19 +245,14 @@ class Graph {
     sourceNode.getAdjacents().forEach((node) => {
       if (!newPath.has(node)) {
         const nextPaths = this.findAllPaths(node.value, destination, newPath);
-        nextPaths.forEach(nextPath => paths.push(nextPath));
+        nextPaths.forEach((nextPath) => paths.push(nextPath));
       }
     });
     return paths;
   }
 }
 
-Graph.UNDIRECTED = Symbol('undirected graph'); // one-way edges
-Graph.DIRECTED = Symbol('directed graph'); // two-ways edges
+Graph.UNDIRECTED = Symbol('undirected graph'); // two-way edges
+Graph.DIRECTED = Symbol('directed graph'); // one-way edges
 
 module.exports = Graph;
-
-/*
- * https://repl.it/@amejiarosario/graphpy
- * http://www.pythontutor.com/visualize.html#mode=edit - https://goo.gl/Xp7Zpm
- */

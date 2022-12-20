@@ -10,7 +10,7 @@ and the meaning the the following:
 - Minor: Features (new functionality, adding new topics)
 - Patch: Fixes (bug fixes, typos, etc.)
 
-# Generating Changelog
+# Generating Changelog (manually) [deprecated]
 
 We use these three sections in changelog: new features, bug fixes, breaking changes.
 
@@ -22,9 +22,9 @@ git log <last tag> HEAD --pretty=format:%s
 # example
 git log 1.1.0..HEAD --pretty=format:%s
 
-git log 1.2.0..HEAD --pretty=format:"- %s [commit](https://github.com/amejiarosario/dsa.js/commit/%H)" --grep "BREAKING CHANGE:"
-git log 1.2.0..HEAD --pretty=format:"- %s [commit](https://github.com/amejiarosario/dsa.js/commit/%H)" --grep "^feat.*:"
-git log 1.2.0..HEAD --pretty=format:"- %s [commit](https://github.com/amejiarosario/dsa.js/commit/%H)" --grep "^fix.*:"
+git log 1.3.8..HEAD --pretty=format:"- %s [commit](https://github.com/amejiarosario/dsa.js/commit/%H)" --grep "BREAKING CHANGE:"
+git log 1.3.8..HEAD --pretty=format:"- %s [commit](https://github.com/amejiarosario/dsa.js/commit/%H)" --grep "^feat.*:"
+git log 1.3.8..HEAD --pretty=format:"- %s [commit](https://github.com/amejiarosario/dsa.js/commit/%H)" --grep "^fix.*:"
 ```
 
 New features in this release
@@ -118,3 +118,6 @@ console.log('bar');
 /* eslint-enable no-alert */
 ```
 
+# Asciidoctor Manual
+
+https://asciidoctor.org/docs/user-manual/

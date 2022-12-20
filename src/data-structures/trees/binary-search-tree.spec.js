@@ -2,7 +2,7 @@ const { BinarySearchTree } = require('../../index');
 
 describe('Binary Search Tree', () => {
   let bst;
-  const getValues = treeGenerator => Array.from(treeGenerator).map(node => node.value);
+  const getValues = (treeGenerator) => Array.from(treeGenerator).map((node) => node.value);
 
   beforeEach(() => {
     bst = new BinarySearchTree();
@@ -66,7 +66,7 @@ describe('Binary Search Tree', () => {
       it('should deal with duplicates', () => {
         const root = bst.add(1);
         expect(root.meta.multiplicity).toBe(undefined);
-        bst.add(1);
+        expect(bst.add(1)).toBe(root); // should return existing
         expect(bst.size).toBe(2);
         expect(root.toValues()).toMatchObject({
           value: 1, parent: null, left: null, right: null,
@@ -105,7 +105,7 @@ describe('Binary Search Tree', () => {
         expect(parent).toMatchObject({ value: 5 });
       });
 
-      it('should find future parent of a node that doesnt exist yet', () => {
+      it('should find future parent of a node that doesnt exist yet with -1', () => {
         bst.add(5);
         bst.add(1);
         const { found, parent } = bst.findNodeAndParent(-1);
@@ -134,7 +134,7 @@ describe('Binary Search Tree', () => {
         // get keys
         expect(getValues(bst.inOrderTraversal())).toEqual([1, {}, 'dos']);
         // get data
-        expect(Array.from(bst.inOrderTraversal()).map(n => n.data())).toEqual([
+        expect(Array.from(bst.inOrderTraversal()).map((n) => n.data())).toEqual([
           1,
           fn,
           2,
@@ -262,7 +262,7 @@ describe('Binary Search Tree', () => {
       });
 
       it('should remove duplicates', () => {
-        bst.add(40); // add duplicate
+        expect(bst.add(40)).toBe(n40); // add duplicate
         expect(n40.meta.multiplicity).toBe(2);
 
         expect(bst.remove(40)).toBe(true);
@@ -312,7 +312,7 @@ describe('Binary Search Tree', () => {
 
       it('should generate an array from dfs', () => {
         const nodes = Array.from(bst.dfs());
-        const values = nodes.map(node => node.value);
+        const values = nodes.map((node) => node.value);
         expect(values).toEqual([10, 5, 4, 3, 30, 15, 40]);
       });
     });
@@ -326,7 +326,7 @@ describe('Binary Search Tree', () => {
     describe('#preOrderTraversal', () => {
       it('should generate an array from preOrderTraversal', () => {
         const nodes = Array.from(bst.preOrderTraversal());
-        const values = nodes.map(node => node.value);
+        const values = nodes.map((node) => node.value);
         expect(values).toEqual([10, 5, 4, 3, 30, 15, 40]);
       });
     });
@@ -334,7 +334,7 @@ describe('Binary Search Tree', () => {
     describe('#postOrderTraversal', () => {
       it('should generate an array from postOrderTraversal', () => {
         const nodes = Array.from(bst.postOrderTraversal());
-        const values = nodes.map(node => node.value);
+        const values = nodes.map((node) => node.value);
         expect(values).toEqual([3, 4, 5, 15, 40, 30, 10]);
       });
     });

@@ -1,5 +1,6 @@
 // data structures
 const LinkedList = require('./data-structures/linked-lists/linked-list');
+const ListNode = require('./data-structures/linked-lists/node');
 const Queue = require('./data-structures/queues/queue');
 const Stack = require('./data-structures/stacks/stack');
 const Graph = require('./data-structures/graphs/graph');
@@ -14,6 +15,12 @@ const BinaryTreeNode = require('./data-structures/trees/binary-tree-node');
 const AvlTree = require('./data-structures/trees/avl-tree');
 const RedBlackTree = require('./data-structures/trees/red-black-tree');
 const LRUCache = require('./data-structures/custom/lru-cache');
+const Trie = require('./data-structures/trees/trie');
+const Heap = require('./data-structures/heaps/heap');
+const MinHeap = require('./data-structures/heaps/min-heap');
+const MaxHeap = require('./data-structures/heaps/max-heap');
+const PriorityQueue = require('./data-structures/heaps/priority-queue');
+
 // algorithms
 const bubbleSort = require('./algorithms/sorting/bubble-sort');
 const insertionSort = require('./algorithms/sorting/insertion-sort');
@@ -23,6 +30,7 @@ const mergeSort = require('./algorithms/sorting/merge-sort');
 
 module.exports = {
   LinkedList,
+  ListNode,
   Queue,
   Stack,
   Graph,
@@ -37,6 +45,11 @@ module.exports = {
   AvlTree,
   RedBlackTree,
   LRUCache,
+  Trie,
+  Heap,
+  MinHeap,
+  MaxHeap,
+  PriorityQueue,
   bubbleSort,
   insertionSort,
   selectionSort,

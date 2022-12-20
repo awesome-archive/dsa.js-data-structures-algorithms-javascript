@@ -1,68 +1,43 @@
 /**
- * Design and implement a data structure for Least Recently Used (LRU) cache.
- * It should support the following operations: get and put.
-
-    get(key) - Get the value (will always be positive) of the key
-        if the key exists in the cache, otherwise return -1.
-    put(key, value) - Set or insert the value if the key is not already present.
-        When the cache reached its capacity, it should invalidate the least
-        recently used item before inserting a new item.
-
-    Follow up:
-    Could you do both operations in O(1) time complexity?
-
-    Example:
-
-    LRUCache cache = new LRUCache( 2);
-
-    cache.put(1, 1);
-    cache.put(2, 2);
-    cache.get(1);       // returns 1
-    cache.put(3, 3);    // evicts key 2
-    cache.get(2);       // returns -1 (not found)
-    cache.put(4, 4);    // evicts key 1
-    cache.get(1);       // returns -1 (not found)
-    cache.get(3);       // returns 3
-    cache.get(4);       // returns 4
-
- *  https://leetcode.com/problems/lru-cache/description/
- *  https://leetcode.com/submissions/detail/178329173/
- *
- * @param {number} capacity
+ * Least Recently Used (LRU) cache.
+ * Key/Value storage with fixed max number of items.
+ * Least recently used items are discarded once the limit is reached.
+ * Reading and updating the values mark the items as recently used.
+ * @author Adrian Mejia <adrianmejia.com>
  */
-class LRUCache {
+class LRUCache extends Map {
+  /**
+   * @param {number} capacity - The max number of items on the cache
+   */
   constructor(capacity) {
-    this.map = new Map();
+    super();
     this.capacity = capacity;
   }
 
+  /**
+   * Get value associated with the key. Mark keys as recently used.
+   * @param {number} key
+   * @returns {number} value or if not found -1
+   */
   get(key) {
-    const value = this.map.get(key);
-    if (value) {
-      this.moveToTop(key);
-      return value;
-    }
-    return -1;
+    if (!super.has(key)) return -1;
+    const value = super.get(key);
+    this.put(key, value); // re-insert at the top (most recent).
+    return value;
   }
 
+  /**
+   * Upsert key/value pair. Updates mark keys are recently used.
+   * @param {number} key
+   * @param {number} value
+   * @returns {void}
+   */
   put(key, value) {
-    this.map.set(key, value);
-    this.rotate(key);
-  }
-
-  rotate(key) {
-    this.moveToTop(key);
-    while (this.map.size > this.capacity) {
-      const it = this.map.keys();
-      this.map.delete(it.next().value);
-    }
-  }
-
-  moveToTop(key) {
-    if (this.map.has(key)) {
-      const value = this.map.get(key);
-      this.map.delete(key);
-      this.map.set(key, value);
+    if (super.has(key)) super.delete(key);
+    super.set(key, value);
+    if (super.size > this.capacity) {
+      const oldestKey = super.keys().next().value;
+      super.delete(oldestKey);
     }
   }
 }

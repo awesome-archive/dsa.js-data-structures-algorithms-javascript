@@ -18,6 +18,11 @@ const Tree = require('../../trees/red-black-tree'); // fast insertion
  *        allocate memory beforehand (e.g. HashMap’s initial capacity)
  *        nor you have to rehash when is getting full.
  *
+ * Implementations in other languages:
+ * Java: https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/TreeMap.html
+ * C++: https://en.cppreference.com/w/cpp/container/map
+ * Python: none
+ *
  */
 class TreeMap {
   // tag::constructor[]
@@ -92,6 +97,22 @@ class TreeMap {
   }
   // end::delete[]
 
+  /**
+   * Get the last key/value pair (node with largest key)
+   */
+  lastEntry() {
+    const node = this.tree.getRightmost();
+    return node ? [node.value, node.data()] : [];
+  }
+
+  /**
+   * Get the first key/value pair (node with smallest key)
+   */
+  firstEntry() {
+    const node = this.tree.getLeftmost();
+    return node ? [node.value, node.data()] : [];
+  }
+
   // tag::iterators[]
   /**
    * Default iterator for this map
@@ -132,6 +153,13 @@ class TreeMap {
     for (const node of this) {
       yield [node.value, node.data()];
     }
+  }
+
+  /**
+   * Removes all key/value pairs from the Map object.
+   */
+  clear() {
+    this.tree = new Tree();
   }
 }
 
